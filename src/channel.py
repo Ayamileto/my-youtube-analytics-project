@@ -7,16 +7,71 @@ youtube = build('youtube', 'v3', developerKey=api_key)
 
 
 class Channel:
-    """Класс для ютуб-канала"""
+    """Класс для ютуб - канала"""
+
 
     def __init__(self, channel_id: str) -> None:
-        """Экземпляр инициализируется id канала. Дальше все данные будут подтягиваться по API."""
+        """Экземпляр инициализируется id канала.
+        Дальше все данные будут подтягиваться по API."""
         if not isinstance(channel_id, str):
             raise ValueError('channel_id должно быть строкой')
-        self.channel_id = channel_id
+        self.__channel_id = channel_id
+        self.title = self.channel_data['items'][0]['snippet']['title']
+        self.description = self.channel_data['items'][0]['snippet']['description']
+        self.custom_url = self.channel_data['items'][0]['snippet']['customUrl']
+        self.url = f"https://www.youtube.com/{self.custom_url}"
+        self.subscriber_count = int(self.channel_data['items'][0]['statistics']['subscriberCount'])
+        self.video_count = int(self.channel_data['items'][0]['statistics']['videoCount'])
+        self.view_count = int(self.channel_data['items'][0]['statistics']['viewCount'])
+
+
+    @property
+    def channel_id(self):
+        """Возвращает и защищает от изменений id канала."""
+        return self.__channel_id
+
+
+    @property
+    def channel_data(self):
+        """ Получаем список из данных по API - запросу """
+        channel = youtube.channels().list(id=self.__channel_id, part='snippet,statistics').execute()
+        return channel
+
 
     def print_info(self) -> None:
         """Выводит в консоль информацию о канале."""
-        channel = youtube.channels().list(id=self.channel_id, part='snippet,statistics').execute()
+        channel = self.channel_data
         print(json.dumps(channel, indent=2, ensure_ascii=False))
+
+
+    @classmethod
+    def get_service(cls):
+        """ Возвращает объект для работы с YouTube API """
+        channel = cls.channel_data
+        return channel
+
+
+    def to_json(self, filename):
+        """ Сохраняет в файл значения атрибутов экземпляра `Channel` в формате:
+        'channel_id':  id канала,
+        'title': название канала,
+        'description': описание канала,
+        'url': ссылка на канал,
+        'subscriber_count': количество подписчиков,
+        'video_count': количество видео,
+        'view_count': общее количество просмотров
+        """
+        info_channel_data = filename
+        searching_data = {
+            'channel_id':  self.__channel_id,
+            'title': self.title,
+            'description': self.description,
+            'url': self.url,
+            'subscriber_count': self.subscriber_count,
+            'video_count': self.video_count,
+            'view_count': self.view_count
+         }
+        with open(info_channel_data, "w") as file:
+            # Записываем данные в файл JSON
+            json.dump(searching_data, file, indent=2, ensure_ascii=False)
 
