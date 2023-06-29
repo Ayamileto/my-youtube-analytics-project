@@ -25,6 +25,70 @@ class Channel:
         self.view_count = int(self.channel_data['items'][0]['statistics']['viewCount'])
 
 
+    def __str__(self):
+        """
+        Возвращает строку в формате `<название_канала> (<ссылка_на_канал>)`
+        """
+        return f"{self.title} ({self.url})"
+
+
+    def __add__(self, other):
+        """ Возвращает результат от суммы подписчиков двух каналов """
+        add_ = self.subscriber_count + other.subscriber_count
+        return add_
+
+
+    def __sub__(self, other):
+        """ Возвращает результат вычитания подписчиков двух каналов """
+        sub_ = self.subscriber_count - other.subscriber_count
+        return sub_
+
+
+    def __gt__(self, other):
+        """
+        Возвращает True или False если условие сравнения
+        подписчиков двух каналов верны или нет соответственно
+        """
+        gt_ = self.subscriber_count > other.subscriber_count
+        return gt_
+
+
+    def __ge__(self, other):
+        """
+        Возвращает True или False если условие сравнения
+        подписчиков двух каналов верны или нет соответственно
+        """
+        ge_ = self.subscriber_count > other.subscriber_count
+        return ge_
+
+
+    def __lt__(self, other):
+        """
+        Возвращает True или False если условие сравнения
+        подписчиков двух каналов верны или нет соответственно
+        """
+        lt_ = self.subscriber_count < other.subscriber_count
+        return lt_
+
+
+    def __le__(self, other):
+        """
+        Возвращает True или False если условие сравнения
+        подписчиков двух каналов верны или нет соответственно
+        """
+        le_ = self.subscriber_count < other.subscriber_count
+        return le_
+
+
+    def __eq__(self, other):
+        """
+        Возвращает True или False если число
+        подписчиков двух каналов равны или нет соответственно
+        """
+        if self.subscriber_count == other.subscriber_count:
+            return True
+        return False
+
     @property
     def channel_id(self):
         """Возвращает и защищает от изменений id канала."""
