@@ -32,8 +32,35 @@ class Video:
                                            id=self.id_video).execute()
         return video_data
 
+
     def __str__(self):
         """
         Возвращает строку в формате '<название видео>'
         """
         return f'{self.video_title}'
+
+
+class PLVideo(Video):
+    """
+    Класс инициализирует экземпляр по id видео и id плейлиста.
+    """
+    def __init__(self, id_video, id_playlist):
+        """
+        Экземпляр инициализируется по ID видео из Youtube и ID плейлиста.
+        Остальные данные подтягиваются по API.
+        :id_video: - id видео
+        :video_title: - название видео
+        :url_video: - ссылка на видео
+        :view_count: - количество просмотров
+        :like_count: - количество лайков
+        :id_playlist: - id плейлиста
+        """
+        super().__init__(id_video)
+        self.id_playlist = id_playlist
+
+
+    def __str__(self):
+        """
+        Возвращает строку в формате '<название видео>'
+        """
+        return super().__str__()
