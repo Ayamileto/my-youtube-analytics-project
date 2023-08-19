@@ -19,7 +19,8 @@ class PlayList:
         self.url = f"https://www.youtube.com/playlist?list={self._playlist_id}"
 
     def __str__(self):
-        print(self.total_duration)
+        """ Возвращает строку c общим количеством времени всего плейлиста """
+        return f"{self.total_duration}"
 
     @property
     def playlist_id(self):
