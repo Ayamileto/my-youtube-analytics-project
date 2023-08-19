@@ -18,6 +18,9 @@ class PlayList:
         self.title = self.playlist_id['items'][0]['snippet']['title']
         self.url = f"https://www.youtube.com/playlist?list={self._playlist_id}"
 
+    def __str__(self):
+        print(self.total_duration)
+
     @property
     def playlist_id(self):
         """ Получение данных плейлиста от его id через API-запрос """
